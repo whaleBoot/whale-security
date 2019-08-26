@@ -20,3 +20,15 @@ spring:
       enabled: false
   session:
     store-type: none
+  resources:
+    static-locations: classpath:/static/
+
+whale:
+  security:
+    browser:
+      loginPage: /demo-signIn.html
+      loginType: JSON #REDIRECT
+    code:
+      image:
+        length: 4
+        url: /whale/hello
