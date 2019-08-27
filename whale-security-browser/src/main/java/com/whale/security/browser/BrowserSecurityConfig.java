@@ -1,7 +1,10 @@
 package com.whale.security.browser;
 
-import com.whale.security.core.filter.ValidataCodeFilter;
+import com.whale.security.core.authentication.AbstractChannelSecurityConfig;
+import com.whale.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.whale.security.core.constants.SecurityConstants;
 import com.whale.security.core.properties.SecurityProperties;
+import com.whale.security.core.validata.code.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -27,22 +30,22 @@ import javax.sql.DataSource;
  * @Version 1.0
  **/
 @Configuration
-public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
+public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
     @Autowired
     private SecurityProperties securityProperties;
-
-    @Autowired
-    private AuthenticationSuccessHandler browserAuthenticationSuccessHandler;
-
-    @Autowired
-    private AuthenticationFailureHandler browserAuthenctiationFailureHandler;
 
     @Autowired
     private DataSource dataSource;
 
     @Autowired
     private UserDetailsService myUserDetailService;
+
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
+    @Autowired
+    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
 
     @Bean
@@ -62,18 +65,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        ValidataCodeFilter validataCodeFilter = new ValidataCodeFilter();
-        validataCodeFilter.setAuthenticationFailureHandler(browserAuthenctiationFailureHandler);
-        validataCodeFilter.setSecurityProperties(securityProperties);
-        validataCodeFilter.afterPropertiesSet();
 
-        http.addFilterBefore(validataCodeFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin()
-//                .loginPage("/whale-signIn.html")
-                .loginPage("/authentication/require")
-                .loginProcessingUrl("/authentication/form")
-                .successHandler(browserAuthenticationSuccessHandler)
-                .failureHandler(browserAuthenctiationFailureHandler)
+        applyPasswordAuthenticationConfig(http);
+
+        http.apply(validateCodeSecurityConfig)
+                .and()
+                .apply(smsCodeAuthenticationSecurityConfig)
                 .and()
                 .rememberMe()
                 .tokenRepository(persistentTokenRepository())
@@ -81,13 +78,18 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsService(myUserDetailService)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/authentication/require", "/error", "/code/*",
-                        securityProperties.getBrowser().getLoginPage()).permitAll()
+                .antMatchers(
+                        SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+                        SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
+                        securityProperties.getBrowser().getLoginPage(),
+                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
+                        securityProperties.getBrowser().getSignUpUrl(),
+                        "/user/regist")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .csrf().disable();
-
 
     }
 }

@@ -1,6 +1,6 @@
 package com.whale.security.browser;
 
-import com.whale.security.core.common.domain.SimpleResponse;
+import com.whale.security.core.support.SimpleResponse;
 import com.whale.security.core.properties.SecurityProperties;
 import com.whale.security.core.utils.ResultVO;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,6 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import sun.security.util.SecurityConstants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

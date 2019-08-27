@@ -1,7 +1,7 @@
 package com.whale.security.core.handle;
 
 
-import com.whale.security.core.common.domain.SimpleResponse;
+import com.whale.security.core.support.SimpleResponse;
 import com.whale.security.core.exception.CustomException;
 import com.whale.security.core.utils.ResultVO;
 import org.slf4j.Logger;

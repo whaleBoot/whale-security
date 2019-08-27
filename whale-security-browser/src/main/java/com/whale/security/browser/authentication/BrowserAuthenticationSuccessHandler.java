@@ -1,14 +1,15 @@
 package com.whale.security.browser.authentication;
 
-import com.whale.security.core.common.domain.SimpleResponse;
+import com.whale.security.core.support.SimpleResponse;
 import com.whale.security.core.enums.LoginType;
+import com.whale.security.core.exception.CustomException;
 import com.whale.security.core.properties.SecurityProperties;
 import com.whale.security.core.utils.JacksonJsonUtil;
 import com.whale.security.core.utils.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ import java.util.HashMap;
 
 /**
  * @ClassName BrowserAuthenticationSuccessHandler
- * @Description TODO
+ * @Description
  * @Author like
  * @Data 2019/8/23 9:37
  * @Version 1.0
@@ -42,7 +43,7 @@ public class BrowserAuthenticationSuccessHandler extends SavedRequestAwareAuthen
             try {
                 response.getWriter().write(JacksonJsonUtil.obj2json(simpleResponse));
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "数据转换异常");
             }
         } else {
             super.onAuthenticationSuccess(request, response, authentication);

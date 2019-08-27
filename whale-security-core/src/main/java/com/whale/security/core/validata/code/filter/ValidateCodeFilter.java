@@ -128,7 +128,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         if (!StringUtils.equalsIgnoreCase(request.getMethod(), "get")) {
             Set<String> urls = urlMap.keySet();
             for (String url : urls) {
-                if (pathMatcher.match(url, request.getRequestURI())) {
+                if (pathMatcher.match(url, request.getServletPath())) {
                     result = urlMap.get(url);
                 }
             }

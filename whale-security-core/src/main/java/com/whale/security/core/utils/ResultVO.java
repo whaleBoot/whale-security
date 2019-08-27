@@ -1,7 +1,7 @@
 package com.whale.security.core.utils;
 
 
-import com.whale.security.core.common.domain.SimpleResponse;
+import com.whale.security.core.support.SimpleResponse;
 
 import java.util.Map;
 

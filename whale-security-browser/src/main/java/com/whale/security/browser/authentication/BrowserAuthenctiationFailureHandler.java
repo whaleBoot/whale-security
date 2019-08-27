@@ -1,7 +1,8 @@
 package com.whale.security.browser.authentication;
 
-import com.whale.security.core.common.domain.SimpleResponse;
+import com.whale.security.core.support.SimpleResponse;
 import com.whale.security.core.enums.LoginType;
+import com.whale.security.core.exception.CustomException;
 import com.whale.security.core.properties.SecurityProperties;
 import com.whale.security.core.utils.JacksonJsonUtil;
 import com.whale.security.core.utils.ResultVO;
@@ -9,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +43,7 @@ public class BrowserAuthenctiationFailureHandler extends SimpleUrlAuthentication
             try {
                 response.getWriter().write(JacksonJsonUtil.obj2json(simpleResponse));
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "数据转换异常");
             }
         } else {
             super.onAuthenticationFailure(request, response, exception);

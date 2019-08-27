@@ -2,7 +2,7 @@ package com.whale.security.core.constants;
 
 /**
  * @ClassName SecurityConstants
- * @Description TODO
+ * @Description 常量
  * @Author like
  * @Data 2019/8/26 15:28
  * @Version 1.0
@@ -17,7 +17,7 @@ public interface SecurityConstants {
     /**
      * 当请求需要身份认证时，默认跳转的url
      *
-     * @see SecurityController
+     * @See BrowserSecurityController
      */
     public static final String DEFAULT_UNAUTHENTICATION_URL = "/authentication/require";
     /**
@@ -31,9 +31,9 @@ public interface SecurityConstants {
     /**
      * 默认登录页面
      *
-     * @see SecurityController
+     * @see BrowserSecurityController
      */
-    public static final String DEFAULT_LOGIN_PAGE_URL = "/imooc-signIn.html";
+    public static final String DEFAULT_LOGIN_PAGE_URL = "/whale-signIn.html";
     /**
      * 验证图片验证码时，http请求中默认的携带图片验证码信息的参数的名称
      */

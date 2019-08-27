@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
  * @Version 1.0
  **/
 @Slf4j
-@Component()
+@Component
 public class MyUserDetailService implements UserDetailsService {
 
 //    @Autowired

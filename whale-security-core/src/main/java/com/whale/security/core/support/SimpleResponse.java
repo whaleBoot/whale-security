@@ -1,4 +1,4 @@
-package com.whale.security.core.common.domain;
+package com.whale.security.core.support;
 
 import lombok.Data;
 
