@@ -27,8 +27,8 @@ import java.util.HashMap;
  * @Version 1.0
  **/
 @Slf4j
-@Component("browserAuthenctiationFailureHandler")
-public class BrowserAuthenctiationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+@Component("whaleAuthenticationFailureHandler")
+public class WhaleAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Autowired
     private SecurityProperties securityProperties;

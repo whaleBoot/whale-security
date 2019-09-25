@@ -17,7 +17,7 @@ public class BrowserProperties {
 
     private LoginType loginType = LoginType.JSON;
 
-    private String signUpUrl = "/demo-signUp.html";
+    private String signUpUrl = "/whale-signUp.html";
 
     private int rememberMeSeconds = 3600;
 }

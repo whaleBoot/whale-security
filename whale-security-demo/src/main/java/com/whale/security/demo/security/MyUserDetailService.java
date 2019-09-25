@@ -1,4 +1,4 @@
-package com.whale.security.browser;
+package com.whale.security.demo.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +8,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.social.security.SocialUser;
+import org.springframework.social.security.SocialUserDetails;
+import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 /**
  * @ClassName MyUserDetailService
@@ -20,7 +22,7 @@ import org.springframework.stereotype.Service;
  **/
 @Slf4j
 @Component
-public class MyUserDetailService implements UserDetailsService {
+public class MyUserDetailService implements UserDetailsService, SocialUserDetailsService {
 
 //    @Autowired
 //    private UserRepository userRepository;
@@ -44,6 +46,23 @@ public class MyUserDetailService implements UserDetailsService {
         // username password 为数据库中查询出来的数据，并非用户输入的数据
         //2. 根据查询到的用户信息，编写自定义逻辑判断用户状态是否冻结等... 同时，将用户状态返回给Security
         return new User(username, password,
+                true, true, true, true,
+                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+    }
+
+    @Override
+    public SocialUserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
+        log.info("社交登录用户Id:" + userId);
+        return buildUser(userId);
+    }
+
+    private SocialUserDetails buildUser(String userId) {
+        // 根据用户名查找用户信息
+        //根据查找到的用户信息判断用户是否被冻结
+        //模拟注册时将密码加密动作
+        String password = passwordEncoder.encode("123456");
+        log.info("加密后密码{}", password);
+        return new SocialUser(userId, password,
                 true, true, true, true,
                 AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }

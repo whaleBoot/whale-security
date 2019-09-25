@@ -1,4 +1,4 @@
-package com.whale.security.demo;
+package com.whale.security.demo.code;
 
 import com.whale.security.core.properties.SecurityProperties;
 import com.whale.security.core.utils.ValidateCodeUtil;
@@ -11,7 +11,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 /**
  * @ClassName DemoImageCodeGenerator
- * @Description TODO
+ * @Description 此处定义的bean名，若与ValidateCodeBeanConfig中ConditionalOnMissingBean的name一致，则会使用此bean
  * @Author like
  * @Data 2019/8/23 15:03
  * @Version 1.0

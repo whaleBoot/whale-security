@@ -1,5 +1,6 @@
 package com.whale.security.core.authentication.mobile;
 
+import lombok.Data;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
@@ -14,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @Data 2019/8/26 17:52
  * @Version 1.0
  **/
-
+@Data
 public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
 
     private UserDetailsService userDetailsService;
@@ -53,13 +54,4 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
     public boolean supports(Class<?> authentication) {
         return SmsCodeAuthenticationToken.class.isAssignableFrom(authentication);
     }
-
-    public UserDetailsService getUserDetailsService() {
-        return userDetailsService;
-    }
-
-    public void setUserDetailsService(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
-
 }

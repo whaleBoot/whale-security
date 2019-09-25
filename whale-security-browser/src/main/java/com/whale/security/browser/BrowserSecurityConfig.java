@@ -6,19 +6,15 @@ import com.whale.security.core.constants.SecurityConstants;
 import com.whale.security.core.properties.SecurityProperties;
 import com.whale.security.core.validata.code.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
 
@@ -47,6 +43,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
+    @Autowired
+    private SpringSocialConfigurer whaleSocialSecurityConfig;
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -69,23 +68,24 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
         applyPasswordAuthenticationConfig(http);
 
         http.apply(validateCodeSecurityConfig)
-                .and()
+                    .and()
                 .apply(smsCodeAuthenticationSecurityConfig)
-                .and()
+                    .and()
+                .apply(whaleSocialSecurityConfig)
+                    .and()
                 .rememberMe()
-                .tokenRepository(persistentTokenRepository())
-                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
-                .userDetailsService(myUserDetailService)
-                .and()
+                    .tokenRepository(persistentTokenRepository())
+                    .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                    .userDetailsService(myUserDetailService)
+                    .and()
                 .authorizeRequests()
-                .antMatchers(
-                        SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+                    .antMatchers(
+                            SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
                         securityProperties.getBrowser().getLoginPage(),
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
                         securityProperties.getBrowser().getSignUpUrl(),
-                        "/user/regist")
-                .permitAll()
+                        "/user/regist").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -24,10 +24,10 @@ public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapt
 
 
     @Autowired
-    protected AuthenticationSuccessHandler browserAuthenticationSuccessHandler;
+    protected AuthenticationSuccessHandler whaleAuthenticationSuccessHandler;
 
     @Autowired
-    protected AuthenticationFailureHandler browserAuthenctiationFailureHandler;
+    protected AuthenticationFailureHandler whaleAuthenticationFailureHandler;
 
     @Autowired
     private UserDetailsService myUserDetailService;
@@ -37,8 +37,8 @@ public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapt
 
         SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter();
         smsCodeAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
-        smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(browserAuthenticationSuccessHandler);
-        smsCodeAuthenticationFilter.setAuthenticationFailureHandler(browserAuthenctiationFailureHandler);
+        smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(whaleAuthenticationSuccessHandler);
+        smsCodeAuthenticationFilter.setAuthenticationFailureHandler(whaleAuthenticationFailureHandler);
 
         SmsCodeAuthenticationProvider smsCodeAuthenticationProvider = new SmsCodeAuthenticationProvider();
         smsCodeAuthenticationProvider.setUserDetailsService(myUserDetailService);

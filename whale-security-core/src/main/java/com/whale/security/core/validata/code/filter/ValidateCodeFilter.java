@@ -74,7 +74,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
     }
 
     /**
-     * 讲系统中配置的需要校验验证码的URL根据校验的类型放入map
+     * 将系统中配置的需要校验验证码的URL根据校验的类型放入map
      *
      * @param urlString
      * @param type
@@ -88,14 +88,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.springframework.web.filter.OncePerRequestFilter#doFilterInternal(
-     * javax.servlet.http.HttpServletRequest,
-     * javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain)
-     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
