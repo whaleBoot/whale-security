@@ -8,7 +8,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://192.168.180.146:3306/morning?useSSL=true
+    url: jdbc:mysql://192.168.180.147:3306/morning?useSSL=true
     username: root
     password: 123456
   jpa:
@@ -23,9 +23,9 @@ spring:
   session:
     store-type: redis
   resources:
-    static-locations: classpath:/static/
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
   redis:
-    host: 192.168.180.146
+    host: 192.168.180.147
     port: 6379
 
 whale:
@@ -34,6 +34,9 @@ whale:
       loginPage: /demo-signIn.html
       loginType: JSON #REDIRECT
       signUpUrl: /demo-signUp.html
+      signOutUrl: /demo-signOut.html
+      session:
+        maxSessionsPreventsLogin: true
     code:
       image:
         length: 4

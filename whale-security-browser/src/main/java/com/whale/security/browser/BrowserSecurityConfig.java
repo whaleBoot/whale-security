@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
@@ -55,6 +56,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private InvalidSessionStrategy invalidSessionStrategy;
 
+    @Autowired
+    private LogoutSuccessHandler logoutSuccessHandler;
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -94,6 +98,11 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 .expiredSessionStrategy(sessionInformationExpiredStrategy)
                 .and()
                 .and()
+                .logout()
+                .logoutUrl("/signOut")
+                .logoutSuccessHandler(logoutSuccessHandler)
+                .deleteCookies("JSESSIONID")
+                .and()
                 .authorizeRequests()
                 .antMatchers(
                         SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
@@ -101,6 +110,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                         securityProperties.getBrowser().getLoginPage(),
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
                         securityProperties.getBrowser().getSignUpUrl(),
+                        securityProperties.getBrowser().getSignOutUrl(),
                         securityProperties.getBrowser().getSession().getSessionInvalidUrl() + ".json",
                         securityProperties.getBrowser().getSession().getSessionInvalidUrl() + ".html",
                         "/user/regist").permitAll()

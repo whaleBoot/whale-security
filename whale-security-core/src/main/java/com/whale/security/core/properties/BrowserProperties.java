@@ -19,6 +19,8 @@ public class BrowserProperties {
 
     private String signUpUrl = "/whale-signUp.html";
 
+    private String signOutUrl;
+
     private SessionProperties session = new SessionProperties();
 
     private int rememberMeSeconds = 3600;
