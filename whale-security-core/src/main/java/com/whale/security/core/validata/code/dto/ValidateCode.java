@@ -3,6 +3,7 @@ package com.whale.security.core.validata.code.dto;
 import lombok.Data;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -13,9 +14,10 @@ import java.time.LocalDateTime;
  * @Version 1.0
  **/
 @Data
-public class ValidateCode {
+public class ValidateCode implements Serializable {
 
 
+    private static final long serialVersionUID = 3434257546067782702L;
     private String code;
 
     private LocalDateTime expireTime;

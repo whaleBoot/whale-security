@@ -24,4 +24,6 @@ public class SimpleResponse {
      * 用于存放token的值，jwtToken
      */
     private Map<String, Object> token;
+
+
 }

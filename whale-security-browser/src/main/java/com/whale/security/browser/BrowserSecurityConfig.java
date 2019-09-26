@@ -1,5 +1,6 @@
 package com.whale.security.browser;
 
+import com.whale.security.browser.session.WhaleExpiredSessionStrategy;
 import com.whale.security.core.authentication.AbstractChannelSecurityConfig;
 import com.whale.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.whale.security.core.constants.SecurityConstants;
@@ -14,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
@@ -46,6 +49,12 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private SpringSocialConfigurer whaleSocialSecurityConfig;
 
+    @Autowired
+    private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
+
+    @Autowired
+    private InvalidSessionStrategy invalidSessionStrategy;
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -68,23 +77,32 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
         applyPasswordAuthenticationConfig(http);
 
         http.apply(validateCodeSecurityConfig)
-                    .and()
+                .and()
                 .apply(smsCodeAuthenticationSecurityConfig)
-                    .and()
+                .and()
                 .apply(whaleSocialSecurityConfig)
-                    .and()
+                .and()
                 .rememberMe()
-                    .tokenRepository(persistentTokenRepository())
-                    .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
-                    .userDetailsService(myUserDetailService)
-                    .and()
+                .tokenRepository(persistentTokenRepository())
+                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+                .userDetailsService(myUserDetailService)
+                .and()
+                .sessionManagement()
+                .invalidSessionStrategy(invalidSessionStrategy)
+                .maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())
+                .maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin()) //当session达到最大数时，阻止掉后续的所有登录行为
+                .expiredSessionStrategy(sessionInformationExpiredStrategy)
+                .and()
+                .and()
                 .authorizeRequests()
-                    .antMatchers(
-                            SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+                .antMatchers(
+                        SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
                         securityProperties.getBrowser().getLoginPage(),
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
                         securityProperties.getBrowser().getSignUpUrl(),
+                        securityProperties.getBrowser().getSession().getSessionInvalidUrl() + ".json",
+                        securityProperties.getBrowser().getSession().getSessionInvalidUrl() + ".html",
                         "/user/regist").permitAll()
                 .anyRequest()
                 .authenticated()

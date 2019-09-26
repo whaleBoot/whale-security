@@ -5,6 +5,7 @@ import com.whale.security.demo.validator.MyConstraint;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -14,7 +15,9 @@ import java.util.Date;
  * @Data 2019/8/22 10:56
  * @Version 1.0
  **/
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = -646271080467159516L;
 
     public interface UserSimpleView {};
     public interface UserDetailView extends UserSimpleView {};
