@@ -12,6 +12,7 @@
         <module>whale-security-browser</module>
         <module>whale-security-core</module>
         <module>whale-security-demo</module>
+        <module>whale-security-authorize</module>
     </modules>
 
     <packaging>pom</packaging>
