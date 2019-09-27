@@ -1,4 +1,4 @@
-package com.whale.security.app;
+package com.whale.security.server;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -20,26 +20,29 @@ public class WhaleAuthorizationServerConfig extends AuthorizationServerConfigure
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+              /* secret密码配置从 Spring Security 5.0开始必须以 {加密方式}+加密后的密码 这种格式填写
+
+                    当前版本5新增支持加密方式：
+                    bcrypt - BCryptPasswordEncoder (Also used for encoding)
+                    ldap - LdapShaPasswordEncoder
+                    MD4 - Md4PasswordEncoder
+                    MD5 - new MessageDigestPasswordEncoder("MD5")
+                    noop - NoOpPasswordEncoder
+                    pbkdf2 - Pbkdf2PasswordEncoder
+                    scrypt - SCryptPasswordEncoder
+                    SHA-1 - new MessageDigestPasswordEncoder("SHA-1")
+                    SHA-256 - new MessageDigestPasswordEncoder("SHA-256")
+                    sha256 - StandardPasswordEncoder
+                 */
         clients.inMemory()
                 .withClient("whale")
-                // secret密码配置从 Spring Security 5.0开始必须以 {加密方式}+加密后的密码 这种格式填写
-
-//                 *   当前版本5新增支持加密方式：
-//                 *   bcrypt - BCryptPasswordEncoder (Also used for encoding)
-//                 *   ldap - LdapShaPasswordEncoder
-//                 *   MD4 - Md4PasswordEncoder
-//                 *   MD5 - new MessageDigestPasswordEncoder("MD5")
-//                 *   noop - NoOpPasswordEncoder
-//                 *   pbkdf2 - Pbkdf2PasswordEncoder
-//                 *   scrypt - SCryptPasswordEncoder
-//                 *   SHA-1 - new MessageDigestPasswordEncoder("SHA-1")
-//                 *   SHA-256 - new MessageDigestPasswordEncoder("SHA-256")
-//                 *   sha256 - StandardPasswordEncoder
-//
                 .secret("{noop}" + "whaleSecret")
                 .scopes("all")
                 .authorizedGrantTypes("authorization_code", "password", "refresh_token")
-                .autoApprove(true);
+                .redirectUris("http://example.com")
+                .autoApprove(false);
 
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.whale.security.core.properties;
 
+import com.whale.security.core.constants.SecurityConstants;
 import com.whale.security.core.enums.LoginType;
 import lombok.Data;
 
@@ -16,6 +17,8 @@ public class BrowserProperties {
     private String loginPage = "/whale-signIn.html";
 
     private LoginType loginType = LoginType.JSON;
+
+    private String signInPage = SecurityConstants.DEFAULT_SIGN_IN_PAGE_URL;
 
     private String signUpUrl = "/whale-signUp.html";
 

@@ -20,21 +20,15 @@ import org.springframework.util.Assert;
  **/
 
 public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-    // ~ Static fields/initializers
-    // =====================================================================================
 
     private String mobileParameter = SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE;
     private boolean postOnly = true;
 
-    // ~ Constructors
-    // ===================================================================================================
 
     public SmsCodeAuthenticationFilter() {
-        super(new AntPathRequestMatcher(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE, "POST"));
+        super(new AntPathRequestMatcher(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE, "POST"));
     }
 
-    // ~ Methods
-    // ========================================================================================================
 
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {

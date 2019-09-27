@@ -21,6 +21,7 @@ public class SecurityCoreConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        //如果需要使用自定义密码加密解密算法，可在此return
         return new BCryptPasswordEncoder();
     }
 }

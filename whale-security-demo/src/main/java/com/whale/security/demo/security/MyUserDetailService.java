@@ -47,7 +47,7 @@ public class MyUserDetailService implements UserDetailsService, SocialUserDetail
         //2. 根据查询到的用户信息，编写自定义逻辑判断用户状态是否冻结等... 同时，将用户状态返回给Security
         return new User(username, password,
                 true, true, true, true,
-                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+                AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN"));
     }
 
     @Override
@@ -60,10 +60,10 @@ public class MyUserDetailService implements UserDetailsService, SocialUserDetail
         // 根据用户名查找用户信息
         //根据查找到的用户信息判断用户是否被冻结
         //模拟注册时将密码加密动作
-        String password = passwordEncoder.encode("123456");
+        String password = "{bcrypt}"+passwordEncoder.encode("123456");
         log.info("加密后密码{}", password);
         return new SocialUser(userId, password,
                 true, true, true, true,
-                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+                AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER"));
     }
 }

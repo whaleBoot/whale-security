@@ -1,6 +1,7 @@
 package com.whale.security.demo.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.whale.security.app.authentication.social.AppSingUpUtils;
 import com.whale.security.demo.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,6 +31,9 @@ public class UserController {
     @Autowired
     private ProviderSignInUtils providerSignInUtils;
 
+    @Autowired
+    private AppSingUpUtils appSingUpUtils;
+
     @PostMapping("/regist")
     public void regist(User user, HttpServletRequest request) {
 
@@ -37,6 +41,7 @@ public class UserController {
         String userId = user.getUsername();
         //省略数据库操作 用户注册或绑定  表 whale_UserConnection
         providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+        appSingUpUtils.doPostSignUp(new ServletWebRequest(request), userId);
     }
 
     @GetMapping("/me")

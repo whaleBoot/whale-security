@@ -17,17 +17,17 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.whale.security</groupId>
-            <artifactId>whale-security-browser</artifactId>
-            <version>${whale.security.version}</version>
-        </dependency>
-
         <!--<dependency>-->
             <!--<groupId>com.whale.security</groupId>-->
-            <!--<artifactId>whale-security-app</artifactId>-->
+            <!--<artifactId>whale-security-browser</artifactId>-->
             <!--<version>${whale.security.version}</version>-->
         <!--</dependency>-->
+
+        <dependency>
+            <groupId>com.whale.security</groupId>
+            <artifactId>whale-security-app</artifactId>
+            <version>${whale.security.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
